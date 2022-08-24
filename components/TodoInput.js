@@ -6,6 +6,8 @@ import {
   TextInput,
   View,
   Image,
+  Pressable,
+  Keyboard,
 } from "react-native";
 
 function TodoInput(props) {
@@ -20,28 +22,35 @@ function TodoInput(props) {
     setEnteredTodo("");
   }
 
+  function endAddTodoHandler() {
+    props.onCancel();
+    setEnteredTodo("");
+  }
+
   return (
     <Modal visible={props.visible} animationType="slide">
-      <View style={styles.inputContainer}>
-        <Image
-          source={require("../assets/images/goal.png")}
-          style={styles.image}
-        />
-        <TextInput
-          placeholder="Enter todo"
-          style={styles.textInput}
-          onChangeText={todoInputHandler}
-          value={enteredTodo}
-        />
-        <View style={styles.buttonContainer}>
-          <View style={styles.button}>
-            <Button title="Add Todo" onPress={addTodoHandler} />
-          </View>
-          <View style={styles.button}>
-            <Button title="Cancel" color="red" onPress={props.onCancel} />
+      <Pressable style={styles.pressableWrapper} onPress={Keyboard.dismiss}>
+        <View style={styles.inputContainer}>
+          <Image
+            source={require("../assets/images/goal.png")}
+            style={styles.image}
+          />
+          <TextInput
+            placeholder="Enter todo"
+            style={styles.textInput}
+            onChangeText={todoInputHandler}
+            value={enteredTodo}
+          />
+          <View style={styles.buttonContainer}>
+            <View style={styles.button}>
+              <Button title="Add Todo" onPress={addTodoHandler} />
+            </View>
+            <View style={styles.button}>
+              <Button title="Cancel" color="red" onPress={endAddTodoHandler} />
+            </View>
           </View>
         </View>
-      </View>
+      </Pressable>
     </Modal>
   );
 }
@@ -80,5 +89,9 @@ const styles = StyleSheet.create({
   button: {
     width: "30%",
     margin: 8,
+  },
+
+  pressableWrapper: {
+    flex: 1,
   },
 });
